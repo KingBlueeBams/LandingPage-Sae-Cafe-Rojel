@@ -2,52 +2,59 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 
+/* ═══════════════════════════════════════════════
+   Category Tabs — SVG icons, no emojis
+   ═══════════════════════════════════════════════ */
 const TABS = [
-  { id: 'main-course', label: '🍽️ Main Course' },
-  { id: 'based-coffee', label: '☕ Kopi' },
-  { id: 'based-latte', label: '🥛 Latte' },
-  { id: 'based-choco', label: '🍫 Choco' },
-  { id: 'based-tea', label: '🍵 Tea' },
-  { id: 'based-soda', label: '🫧 Soda' },
-  { id: 'non-coffee', label: '🌿 Non Kopi' },
-  { id: 'traditional', label: '🏺 Tradisional' },
-  { id: 'burger', label: '🍔 Burger' },
-  { id: 'dimsum', label: '🥟 Dimsum' },
-  { id: 'snack', label: '🍟 Snack' },
-  { id: 'side-dish', label: '🥬 Side Dish' },
+  { id: 'main-course', label: 'Main Course' },
+  { id: 'based-coffee', label: 'Kopi' },
+  { id: 'based-latte', label: 'Latte' },
+  { id: 'based-choco', label: 'Choco' },
+  { id: 'based-tea', label: 'Tea' },
+  { id: 'based-soda', label: 'Soda' },
+  { id: 'non-coffee', label: 'Non Kopi' },
+  { id: 'traditional', label: 'Tradisional' },
+  { id: 'burger', label: 'Burger' },
+  { id: 'dimsum', label: 'Dimsum' },
+  { id: 'snack', label: 'Snack' },
+  { id: 'side-dish', label: 'Side Dish' },
 ]
 
+/* ═══════════════════════════════════════════════
+   Full Menu Data — 118+ items, 12 categories
+   isSignature items use col-span-2 in Bento Grid
+   ═══════════════════════════════════════════════ */
 const MENU_DATA = {
   'main-course': [
-    { name: 'Nasi Goreng Sae', price: '25K', badge: 'Best Seller', img: '/images/menu/Main Course/Nasi Goreng Sae.png' },
+    { name: 'Nasi Goreng Sae', price: '25K', badge: 'Best Seller', isSignature: true, img: '/images/menu/Main Course/Nasi Goreng Sae.png' },
     { name: 'Nasi Ayam Laos', price: '28K', badge: 'Pedas', img: '/images/menu/Main Course/Nasi Ayam Laos.png' },
     { name: 'Nasi Rawon', price: '30K', badge: 'Rekomendasi', img: '/images/menu/Main Course/Nasi Rawon.png' },
     { name: 'Nasi Mujaer Bakar', price: '30K', badge: 'Favorit', img: '/images/menu/Main Course/Nasi Mujaer Bakar.png' },
     { name: 'Nasi Ayam Bumbu Sae', price: '28K', badge: 'Pedas', img: '/images/menu/Main Course/Nasi Ayam bumbu sae.png' },
-    { name: 'Nasi Ayam Katsu', price: '25K', badge: 'Rekomendasi', img: '/images/menu/Main Course/Nasi Ayam Katsu.png' },
+    { name: 'Nasi Ayam Katsu', price: '25K', badge: '', img: '/images/menu/Main Course/Nasi Ayam Katsu.png' },
     { name: 'Nasi Goreng Katsu', price: '30K', badge: 'Baru', img: '/images/menu/Main Course/Nasi Goreng Katsu.png' },
-    { name: 'Nasi Goreng Seafood', price: '25K', badge: 'Pedas', img: '/images/menu/Main Course/Nasi Goreng Seafood.png' },
-    { name: 'Nasi Empal', price: '30K', badge: 'Pedas', img: '/images/menu/Main Course/Nasi Empal.png' },
+    { name: 'Nasi Goreng Seafood', price: '25K', badge: '', img: '/images/menu/Main Course/Nasi Goreng Seafood.png' },
+    { name: 'Nasi Empal', price: '30K', badge: '', img: '/images/menu/Main Course/Nasi Empal.png' },
     { name: 'Nasi Pecel Ayam', price: '18K', badge: 'Favorit', img: '/images/menu/Main Course/Nasi pecel ayam.png' },
-    { name: 'Nasi Pecel Empal', price: '20K', badge: 'Pedas', img: '/images/menu/Main Course/Nasi Pecel empal.png' },
+    { name: 'Nasi Pecel Empal', price: '20K', badge: '', img: '/images/menu/Main Course/Nasi Pecel empal.png' },
     { name: 'Nasi Pecel Telur', price: '15K', badge: '', img: '/images/menu/Main Course/Nasi Pecel telur.png' },
     { name: 'Nasi Krengsengan Daging', price: '30K', badge: 'Pedas', img: '/images/menu/Main Course/Nasi Krengsengan Daging.png' },
     { name: 'Nasi Ayam Teriyaki', price: '20K', badge: '', img: '/images/menu/Main Course/Nasi Ayam Teriyaki.png' },
-    { name: 'Nasi Ayam Kampung Laos Sae', price: '35K', badge: 'Premium', img: '/images/menu/Main Course/Nasi Ayam kampung laos Sae.png' },
+    { name: 'Nasi Ayam Kampung Laos Sae', price: '35K', badge: 'Premium', isSignature: true, img: '/images/menu/Main Course/Nasi Ayam kampung laos Sae.png' },
     { name: 'Nasi Daun Jeruk + Chicken Karage', price: '', badge: '', img: '/images/menu/Main Course/Nasi Daun jeruk with chicken karage.png' },
     { name: 'Nasi Telur', price: '', badge: '', img: '/images/menu/Main Course/Nasi Telur.png' },
-    { name: 'Mie Goreng Kampung', price: '18K', badge: 'Pedas', img: '/images/menu/Main Course/Mie Goreng Kampung.png' },
-    { name: 'Mie Kuah Kampung', price: '18K', badge: 'Pedas', img: '/images/menu/Main Course/Mie Kuah kampung.png' },
+    { name: 'Mie Goreng Kampung', price: '18K', badge: '', img: '/images/menu/Main Course/Mie Goreng Kampung.png' },
+    { name: 'Mie Kuah Kampung', price: '18K', badge: '', img: '/images/menu/Main Course/Mie Kuah kampung.png' },
     { name: 'Spaghetti Bolognesse', price: '23K', badge: 'Rekomendasi', img: '/images/menu/Main Course/Spaghetti Bolognesse.png' },
-    { name: 'Spaghetti Aglio e Olio', price: '23K', badge: 'Pedas', img: '/images/menu/Main Course/Spaghetti Aglio e Olio.png' },
+    { name: 'Spaghetti Aglio e Olio', price: '23K', badge: '', img: '/images/menu/Main Course/Spaghetti Aglio e Olio.png' },
     { name: 'Beef Teriyaki', price: '25K', badge: 'Baru', img: '/images/menu/Main Course/Beef Teriyaki.png' },
     { name: 'Sup Iga', price: '30K', badge: 'Baru', img: '/images/menu/Main Course/Sup Iga.png' },
-    { name: 'Mujaer Goreng', price: '28K', badge: 'Baru', img: '/images/menu/Main Course/Mujaer Goreng.png' },
-    { name: 'Capcay Sayur', price: '20K', badge: 'Rekomendasi', img: '/images/menu/Main Course/Capcay Sayur.png' },
+    { name: 'Mujaer Goreng', price: '28K', badge: '', img: '/images/menu/Main Course/Mujaer Goreng.png' },
+    { name: 'Capcay Sayur', price: '20K', badge: '', img: '/images/menu/Main Course/Capcay Sayur.png' },
   ],
   'based-coffee': [
+    { name: 'Original Milk Coffee', price: '18K', badge: 'Rekomendasi', isSignature: true, img: '/images/menu/Based Coffee/Original milk coffee.png' },
     { name: 'Americano', price: '17K / 18K', badge: '', img: '/images/menu/Based Coffee/Americano.png' },
-    { name: 'Original Milk Coffee', price: '18K', badge: 'Rekomendasi', img: '/images/menu/Based Coffee/Original milk coffee.png' },
     { name: 'Cendol Latte', price: '20K', badge: 'Favorit Gen Z', img: '/images/menu/Based Coffee/Cendol latte.png' },
     { name: 'Aren Milk Coffee', price: '18K', badge: '', img: '/images/menu/Based Coffee/Aren Milk Coffee.png' },
     { name: 'Tiramisu Milk Coffee', price: '18K', badge: '', img: '/images/menu/Based Coffee/Tiramisu Milk Coffee.png' },
@@ -59,14 +66,14 @@ const MENU_DATA = {
   ],
   'based-latte': [
     { name: 'Cappucino', price: '16K', badge: '', img: '/images/menu/Based Latte/Cappucino.png' },
-    { name: 'Matcha Latte', price: '16K', badge: '', img: '/images/menu/Based Latte/Matcha Latte.png' },
+    { name: 'Matcha Latte', price: '16K', badge: '', isSignature: true, img: '/images/menu/Based Latte/Matcha Latte.png' },
     { name: 'Latte', price: '16K', badge: '', img: '/images/menu/Based Latte/Latte.png' },
     { name: 'Choco Latte', price: '18K', badge: '', img: '/images/menu/Based Latte/Choco Latte.png' },
     { name: 'Mochaccino Latte', price: '18K', badge: '', img: '/images/menu/Based Latte/Mochaccino Latte.png' },
   ],
   'based-choco': [
     { name: 'Chocoffee', price: '18K', badge: '', img: '/images/menu/Based Choco/Chocoffee.png' },
-    { name: 'Original Choco', price: '20K', badge: '', img: '/images/menu/Based Choco/Original Choco.png' },
+    { name: 'Original Choco', price: '20K', badge: '', isSignature: true, img: '/images/menu/Based Choco/Original Choco.png' },
     { name: 'Banana Choco', price: '20K', badge: '', img: '/images/menu/Based Choco/Banana Choco.png' },
     { name: 'Caramel Choco', price: '20K', badge: '', img: '/images/menu/Based Choco/Caramel choco.png' },
     { name: 'Hazelnut Choco', price: '20K', badge: '', img: '/images/menu/Based Choco/Hazelnut Choco.png' },
@@ -75,26 +82,26 @@ const MENU_DATA = {
   ],
   'based-tea': [
     { name: 'Ice Tea', price: '6K', badge: '', img: '/images/menu/Based Tea/Ice Tea.png' },
-    { name: 'Milk Tea Ice', price: '16K', badge: '', img: '/images/menu/Based Tea/Milk tea ice.png' },
+    { name: 'Milk Tea Ice', price: '16K', badge: '', isSignature: true, img: '/images/menu/Based Tea/Milk tea ice.png' },
     { name: 'Chamomile Tea', price: '15K / 16K', badge: '', img: '/images/menu/Based Tea/Chamomile tea.png' },
     { name: 'Lychee Tea', price: '16K', badge: '', img: '/images/menu/Based Tea/Lychee tea.png' },
     { name: 'Lemon Tea', price: '15K / 16K', badge: '', img: '/images/menu/Based Tea/Lemon tea.png' },
     { name: 'Floral Tea', price: '', badge: '', img: '/images/menu/Based Tea/FLoral Tea.png' },
   ],
   'based-soda': [
-    { name: 'Berry Bliss', price: '16K', badge: 'Foto-Friendly', img: '/images/menu/Based Soda/Berry Bliss.png' },
+    { name: 'Berry Bliss', price: '16K', badge: 'Foto-Friendly', isSignature: true, img: '/images/menu/Based Soda/Berry Bliss.png' },
     { name: 'Lychee Limind', price: '16K', badge: '', img: '/images/menu/Based Soda/Lychee limind.png' },
     { name: 'Markis Squash', price: '16K', badge: '', img: '/images/menu/Based Soda/Markis Squash.png' },
   ],
   'non-coffee': [
-    { name: 'Matcha', price: '18K', badge: '', img: '/images/menu/Non Coffee/Matcha.png' },
+    { name: 'Matcha', price: '18K', badge: '', isSignature: true, img: '/images/menu/Non Coffee/Matcha.png' },
     { name: 'Taro', price: '18K', badge: '', img: '/images/menu/Non Coffee/Taro.png' },
     { name: 'Red Velvet', price: '18K', badge: '', img: '/images/menu/Non Coffee/red velvet.png' },
     { name: 'Mango', price: '18K', badge: '', img: '/images/menu/Non Coffee/mango.png' },
   ],
   'traditional': [
     { name: 'Robusta', price: '10K', badge: '', img: '/images/menu/Traditional Drink/Robusta.png' },
-    { name: 'Arabika', price: '15K', badge: '', img: '/images/menu/Traditional Drink/Arabica.png' },
+    { name: 'Arabika', price: '15K', badge: '', isSignature: true, img: '/images/menu/Traditional Drink/Arabica.png' },
     { name: 'Espresso', price: '15K', badge: '', img: '/images/menu/Traditional Drink/Espresso.png' },
     { name: 'Teh Panas', price: '6K', badge: '', img: '/images/menu/Traditional Drink/Teh panas.png' },
     { name: 'Teh Jahe Panas', price: '10K', badge: '', img: '/images/menu/Traditional Drink/Teh jahe panas.png' },
@@ -107,7 +114,7 @@ const MENU_DATA = {
   ],
   'burger': [
     { name: 'Burger Chicken Classic', price: '20K', badge: '', img: '/images/menu/Burger/Burger chicken classic.png' },
-    { name: 'Burger Beef SAE', price: '23K', badge: '', img: '/images/menu/Burger/Burger beef cae.png' },
+    { name: 'Burger Beef SAE', price: '23K', badge: '', isSignature: true, img: '/images/menu/Burger/Burger beef cae.png' },
     { name: 'Burger Crispy Chicken SAE', price: '23K', badge: '', img: '/images/menu/Burger/Burger crispy chicken sae.png' },
     { name: 'Burger Chicken SAE', price: '23K', badge: '', img: '/images/menu/Burger/Burger chicken sae.png' },
   ],
@@ -118,10 +125,10 @@ const MENU_DATA = {
     { name: 'Tim Tahu', price: '12K', badge: '', img: '/images/menu/Dimsum/Tim Tahu.png' },
     { name: 'Siomay Kepiting', price: '12K', badge: '', img: '/images/menu/Dimsum/Siomay Kepiting.png' },
     { name: 'Dimsum Mozzarella', price: '12K', badge: '', img: '/images/menu/Dimsum/Dimsum mozzarella.png' },
-    { name: 'Dimsum Mentai', price: '15K', badge: 'Baru', img: '/images/menu/Dimsum/Dimsum Mentai.png' },
+    { name: 'Dimsum Mentai', price: '15K', badge: 'Baru', isSignature: true, img: '/images/menu/Dimsum/Dimsum Mentai.png' },
   ],
   'snack': [
-    { name: 'Seblak Komplit', price: '15K', badge: 'Pedas', img: '/images/menu/Snack/Seblak Komplit.png' },
+    { name: 'Seblak Komplit', price: '15K', badge: 'Pedas', isSignature: true, img: '/images/menu/Snack/Seblak Komplit.png' },
     { name: 'Seblak Cireng', price: '15K', badge: 'Pedas', img: '/images/menu/Snack/Seblak Cireng.png' },
     { name: 'Pisang Goreng Original', price: '12K', badge: '', img: '/images/menu/Snack/Pisang goreng original.png' },
     { name: 'Pisang Goreng Keju', price: '12K', badge: '', img: '/images/menu/Snack/Pisang Goreng Keju.png' },
@@ -162,19 +169,32 @@ const MENU_DATA = {
   ],
 }
 
+/* ═══════════════════════════════════════════════
+   MenuCard — List-Only approach, minimalist
+   ═══════════════════════════════════════════════ */
 function MenuCard({ item }) {
   return (
     <div
       className="menu-card"
-      style={{ borderRadius: '4px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
     >
-      {/* Image */}
-      <div style={{ position: 'relative', height: '180px', background: '#1E1E1E', flexShrink: 0 }}>
+      {/* Image — fixed height for uniformity */}
+      <div style={{
+        position: 'relative',
+        height: '180px',
+        background: '#1E1E1E',
+        flexShrink: 0,
+        overflow: 'hidden',
+      }}>
         <Image
           src={item.img}
           alt={item.name}
           fill
-          style={{ objectFit: 'cover' }}
+          sizes="(max-width: 768px) 50vw, 200px"
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
           quality={75}
           loading="lazy"
         />
@@ -196,7 +216,13 @@ function MenuCard({ item }) {
       </div>
 
       {/* Content */}
-      <div style={{ padding: '1rem 1.1rem 1.25rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+      <div style={{
+        padding: '1rem 1.1rem 1.25rem',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.4rem',
+      }}>
         <h3
           className="font-display"
           style={{ fontSize: '0.95rem', color: 'var(--white)', lineHeight: 1.3, fontWeight: 400 }}
@@ -216,10 +242,12 @@ function MenuCard({ item }) {
   )
 }
 
+/* ═══════════════════════════════════════════════
+   Menu Section — Strict Category Tabs
+   ═══════════════════════════════════════════════ */
 export default function Menu() {
   const [activeTab, setActiveTab] = useState('based-coffee')
   const sectionRef = useRef(null)
-  const gridRef = useRef(null)
 
   const switchTab = (id) => {
     setActiveTab(id)
@@ -228,7 +256,7 @@ export default function Menu() {
         gsap.fromTo(
           '.menu-card',
           { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power2.out' }
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.04, ease: 'power2.out' }
         )
       }
     })
@@ -250,14 +278,14 @@ export default function Menu() {
     return () => ctx.revert()
   }, [])
 
-  // Animate cards on initial render
+  // Animate cards on mount
   useEffect(() => {
     if (typeof gsap !== 'undefined') {
       requestAnimationFrame(() => {
         gsap.fromTo(
           '.menu-card',
           { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power2.out' }
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.04, ease: 'power2.out' }
         )
       })
     }
@@ -269,8 +297,9 @@ export default function Menu() {
     <section
       id="menu"
       ref={sectionRef}
+      className="section-padding"
       aria-label="Menu SaeCafeRojel"
-      style={{ background: 'var(--black)', padding: '6rem 3rem' }}
+      style={{ background: 'var(--black)' }}
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {/* Header */}
@@ -288,7 +317,7 @@ export default function Menu() {
           </p>
         </div>
 
-        {/* Tabs */}
+        {/* Category Tabs — horizontal scrollable */}
         <div className="tabs-scroll" role="tablist" aria-label="Kategori menu" style={{ marginBottom: '2rem' }}>
           {TABS.map((tab) => (
             <button
@@ -297,7 +326,6 @@ export default function Menu() {
               aria-selected={activeTab === tab.id}
               aria-controls={`menu-panel-${tab.id}`}
               onClick={() => switchTab(tab.id)}
-              className="tab-btn"
               style={{
                 flexShrink: 0,
                 padding: '0.55rem 1rem',
@@ -319,10 +347,9 @@ export default function Menu() {
           ))}
         </div>
 
-        {/* Grid */}
+        {/* Bento Grid — signature items span 2 cols */}
         <div
           id={`menu-panel-${activeTab}`}
-          ref={gridRef}
           role="tabpanel"
           style={{
             display: 'grid',
@@ -335,7 +362,7 @@ export default function Menu() {
           ))}
         </div>
 
-        {/* CTA */}
+        {/* General WhatsApp CTA (clutter-free) */}
         <div style={{ marginTop: '3rem', textAlign: 'center' }}>
           <a
             href="https://wa.me/6281249777345?text=Halo%20SaeCafeRojel!%20Saya%20mau%20tanya%20tentang%20menu."
@@ -348,12 +375,6 @@ export default function Menu() {
           </a>
         </div>
       </div>
-
-      <style jsx>{`
-        @media (max-width: 768px) {
-          section { padding: 4rem 1.5rem !important; }
-        }
-      `}</style>
     </section>
   )
 }

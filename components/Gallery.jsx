@@ -60,8 +60,9 @@ export default function Gallery() {
     <section
       id="galeri"
       ref={sectionRef}
+      className="section-padding"
       aria-label="Galeri SaeCafeRojel"
-      style={{ background: '#141414', padding: '6rem 3rem' }}
+      style={{ background: '#141414' }}
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {/* Header */}

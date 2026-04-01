@@ -80,8 +80,9 @@ export default function LiveMusic() {
     <section
       id="musik"
       ref={sectionRef}
+      className="section-padding"
       aria-label="Jadwal Live Music SaeCafeRojel"
-      style={{ background: 'var(--gray-dark)', padding: '6rem 3rem' }}
+      style={{ background: 'var(--gray-dark)' }}
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {/* Header */}

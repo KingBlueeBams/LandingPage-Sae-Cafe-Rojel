@@ -111,8 +111,9 @@ export default function Reservation() {
     <section
       id="reservasi"
       ref={sectionRef}
+      className="section-padding"
       aria-label="Reservasi Meja SaeCafeRojel"
-      style={{ background: 'var(--black)', padding: '6rem 3rem' }}
+      style={{ background: 'var(--black)' }}
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem' }} className="res-grid">
 

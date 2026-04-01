@@ -2,6 +2,29 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 
+/* ───────────────────────────────────────────────
+   HeadlineLine: splits text into individual letter <span>s
+   for the macOS Dock proximity-scaling effect.
+   ─────────────────────────────────────────────── */
+function HeadlineLine({ text, id, style }) {
+  return (
+    <span id={id} className="headline-line" style={{ ...style, display: 'block' }}>
+      {text.split('').map((char, i) => (
+        <span
+          key={i}
+          className="headline-char"
+          style={{
+            display: 'inline-block',
+            transition: 'transform 0.15s ease-out, color 0.25s ease-out',
+          }}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </span>
+      ))}
+    </span>
+  )
+}
+
 export default function Hero() {
   const sectionRef = useRef(null)
 
@@ -9,39 +32,89 @@ export default function Hero() {
     if (typeof gsap === 'undefined') return
 
     const ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set(['#hero-tag', '#hero-h1-1', '#hero-h1-2', '#hero-h1-3', '#hero-sub', '#hero-btns', '#hero-stats'], {
-        autoAlpha: 0,
+      /* ── Initial hidden states ── */
+      gsap.set('.headline-char', { opacity: 0, y: 20 })
+      gsap.set(['#hero-tag', '#hero-sub', '#hero-btns', '#hero-stats'], {
+        autoAlpha: 0, y: 20,
       })
-      gsap.set(['#hero-h1-1', '#hero-h1-2', '#hero-h1-3'], { y: 40 })
 
-      // Hero entrance timeline
-      gsap.timeline({ delay: 0.3, defaults: { ease: 'power3.out' } })
-        .to('#hero-tag',   { autoAlpha: 1, duration: 0.6 })
-        .to('#hero-h1-1',  { autoAlpha: 1, y: 0, duration: 0.7 }, '-=0.2')
-        .to('#hero-h1-2',  { autoAlpha: 1, y: 0, duration: 0.7 }, '-=0.45')
-        .to('#hero-h1-3',  { autoAlpha: 1, y: 0, duration: 0.7 }, '-=0.45')
-        .to('#hero-sub',   { autoAlpha: 1, duration: 0.7, ease: 'power2.out' }, '-=0.3')
-        .to('#hero-btns',  { autoAlpha: 1, duration: 0.6, ease: 'power2.out' }, '-=0.3')
-        .to('#hero-stats', { autoAlpha: 1, duration: 0.7, ease: 'power2.out' }, '-=0.2')
+      /* ── Entrance Timeline ── */
+      const tl = gsap.timeline({
+        delay: 0.3,
+        defaults: { ease: 'power3.out' },
+      })
 
-      // Gold glow parallax on scroll
+      tl.to('#hero-tag', { autoAlpha: 1, y: 0, duration: 0.6 })
+        .to('.headline-char', {
+          opacity: 1,
+          y: 0,
+          stagger: 0.018,
+          ease: 'back.out(1.7)',
+          duration: 0.6,
+        }, '-=0.3')
+        .to('#hero-sub', { autoAlpha: 1, y: 0, duration: 0.7 }, '-=0.3')
+        .to('#hero-btns', { autoAlpha: 1, y: 0, duration: 0.6 }, '-=0.3')
+        .to('#hero-stats', { autoAlpha: 1, y: 0, duration: 0.7 }, '-=0.2')
+        .fromTo('#hero-bg-img',
+          { scale: 1.08 },
+          { scale: 1, duration: 2.5, ease: 'power2.out' },
+          0  // starts at same time as timeline
+        )
+
+      /* ── Gold glow parallax ── */
       if (typeof ScrollTrigger !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger)
         gsap.to('#hero-glow', {
-          y: -80,
-          x: 30,
+          y: -80, x: 30,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top top',
             end: 'bottom top',
             scrub: 1.5,
-          }
+          },
         })
       }
     }, sectionRef)
 
-    return () => ctx.revert()
+    /* ── macOS Dock Effect (desktop only) ── */
+    let handleMouseMove = null
+    if (window.innerWidth >= 1024) {
+      handleMouseMove = (e) => {
+        const chars = document.querySelectorAll('.headline-char')
+        chars.forEach((char) => {
+          const rect = char.getBoundingClientRect()
+          const cx = rect.left + rect.width / 2
+          const cy = rect.top + rect.height / 2
+          const dist = Math.sqrt((e.clientX - cx) ** 2 + (e.clientY - cy) ** 2)
+
+          const maxDist = 120
+          if (dist < maxDist) {
+            const scale = 1 + (1 - dist / maxDist) * 0.35
+            gsap.to(char, {
+              scale,
+              color: 'var(--gold-light)',
+              duration: 0.25,
+              ease: 'power2.out',
+              overwrite: 'auto',
+            })
+          } else {
+            gsap.to(char, {
+              scale: 1,
+              clearProps: 'color',
+              duration: 0.45,
+              ease: 'power2.inOut',
+              overwrite: 'auto',
+            })
+          }
+        })
+      }
+      window.addEventListener('mousemove', handleMouseMove)
+    }
+
+    return () => {
+      ctx.revert()
+      if (handleMouseMove) window.removeEventListener('mousemove', handleMouseMove)
+    }
   }, [])
 
   return (
@@ -59,9 +132,10 @@ export default function Hero() {
         overflow: 'hidden',
       }}
     >
-      {/* Background Photo */}
+      {/* Background */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
         <Image
+          id="hero-bg-img"
           src="/images/cafe/Outdoor View Malam.JPG"
           alt="SaeCafeRojel malam hari — suasana premium outdoor"
           fill
@@ -69,14 +143,13 @@ export default function Hero() {
           priority
           quality={85}
         />
-        {/* Dark overlay */}
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to right, rgba(10,10,10,0.92) 55%, rgba(10,10,10,0.6) 100%)',
         }} />
       </div>
 
-      {/* Gold glow decoration */}
+      {/* Gold glow */}
       <div
         id="hero-glow"
         aria-hidden="true"
@@ -92,16 +165,14 @@ export default function Hero() {
         }}
       />
 
-      {/* Vertical gold line removed */}
-
       {/* Content */}
-      <div style={{ position: 'relative', zIndex: 2, maxWidth: '600px' }}>
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '650px' }}>
         {/* Tag */}
         <div id="hero-tag" className="section-tag" style={{ marginBottom: '1.5rem' }}>
           Lumajang, Jawa Timur
         </div>
 
-        {/* Headline 3 baris */}
+        {/* Headline with macOS Dock Effect */}
         <h1
           className="font-display"
           style={{
@@ -111,19 +182,21 @@ export default function Hero() {
             marginBottom: '1.5rem',
           }}
         >
-          <span id="hero-h1-1" style={{ display: 'block', color: 'var(--white)' }}>
-            Rasa Premium,
-          </span>
-          <span
+          <HeadlineLine
+            text="Rasa Premium,"
+            id="hero-h1-1"
+            style={{ color: 'var(--white)' }}
+          />
+          <HeadlineLine
+            text="Suara Premium."
             id="hero-h1-2"
-            className="font-display"
-            style={{ display: 'block', fontStyle: 'italic', color: 'var(--gold)', whiteSpace: 'nowrap' }}
-          >
-            Suara Premium.
-          </span>
-          <span id="hero-h1-3" style={{ display: 'block', color: 'var(--white)' }}>
-            Ruang untuk
-          </span>
+            style={{ fontStyle: 'italic', color: 'var(--gold)', whiteSpace: 'nowrap' }}
+          />
+          <HeadlineLine
+            text="Ruang untuk"
+            id="hero-h1-3"
+            style={{ color: 'var(--white)' }}
+          />
         </h1>
 
         {/* Sub copy */}
@@ -134,7 +207,7 @@ export default function Hero() {
             fontSize: '0.9rem',
             color: 'var(--muted)',
             lineHeight: 1.9,
-            maxWidth: '370px',
+            maxWidth: '400px',
             marginBottom: '2rem',
           }}
         >
@@ -148,18 +221,10 @@ export default function Hero() {
           id="hero-btns"
           style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}
         >
-          <a
-            href="#menu"
-            className="btn-primary"
-            aria-label="Jelajahi menu SaeCafeRojel"
-          >
+          <a href="#menu" className="btn-primary" aria-label="Jelajahi menu SaeCafeRojel">
             Jelajahi Menu
           </a>
-          <a
-            href="#reservasi"
-            className="btn-ghost"
-            aria-label="Buat reservasi meja"
-          >
+          <a href="#reservasi" className="btn-ghost" aria-label="Buat reservasi meja">
             Reservasi Meja →
           </a>
         </div>
@@ -188,15 +253,13 @@ export default function Hero() {
               >
                 {stat.num}
               </div>
-              <div
-                style={{
-                  fontSize: '0.6rem',
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
-                  color: 'var(--muted)',
-                  marginTop: '0.4rem',
-                }}
-              >
+              <div style={{
+                fontSize: '0.6rem',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'var(--muted)',
+                marginTop: '0.4rem',
+              }}>
                 {stat.label}
               </div>
             </div>

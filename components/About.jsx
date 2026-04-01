@@ -62,10 +62,10 @@ export default function About() {
     <section
       id="about"
       ref={sectionRef}
+      className="section-padding"
       aria-label="Tentang SaeCafeRojel"
       style={{
         background: 'var(--gray-dark)',
-        padding: '6rem 3rem',
       }}
     >
       <div
