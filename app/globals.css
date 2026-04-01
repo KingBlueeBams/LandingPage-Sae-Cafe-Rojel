@@ -1,26 +1,192 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --gold:       #C9A84C;
+  --gold-light: #E8D5A3;
+  --gold-dark:  #8B6914;
+  --black:      #0A0A0A;
+  --white:      #F8F6F1;
+  --gray-dark:  #1A1A1A;
+  --gray-mid:   #2A2A2A;
+  --muted:      #888888;
+  --card-bg:    #141414;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  cursor: none;
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+.font-display {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* ─── Custom Cursor ─── */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+.cursor-dot {
+  width: 10px; height: 10px;
+  background: var(--gold);
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  width: 38px; height: 38px;
+  border: 1.5px solid var(--gold);
+  opacity: 0.5;
+}
+
+/* ─── Gold rule ─── */
+.gold-rule {
+  width: 3rem;
+  height: 2px;
+  background: var(--gold);
+  margin: 1.25rem 0;
+}
+
+/* ─── Section tag ─── */
+.section-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.section-tag::before {
+  content: '';
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* ─── Button primary ─── */
+.btn-primary {
+  background: var(--gold);
+  color: var(--black);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.75rem;
+  border: none;
+  cursor: none;
+  transition: background 0.3s;
+  display: inline-block;
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--gold-light); }
+
+/* ─── Button ghost ─── */
+.btn-ghost {
+  background: transparent;
+  color: var(--white);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.75rem 0;
+  border: none;
+  border-bottom: 1px solid var(--gold);
+  cursor: none;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-ghost:hover { color: var(--gold); }
+
+/* ─── Skip to content ─── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--gold);
+  color: var(--black);
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  z-index: 99999;
+  text-decoration: none;
+}
+.skip-link:focus { top: 0; }
+
+/* ─── Divider ─── */
+.divider {
+  border: none;
+  border-top: 1px solid rgba(201,168,76,0.12);
+  margin: 2rem 0;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+/* ─── Selection ─── */
+::selection { background: var(--gold); color: var(--black); }
+
+/* ─── Focus ring ─── */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* ─── Responsive cursor hide on touch ─── */
+@media (hover: none) {
+  .cursor-dot, .cursor-ring { display: none; }
+  body { cursor: auto; }
+}
+
+/* ─── Menu tab scrollable ─── */
+.tabs-scroll {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.5rem;
+}
+.tabs-scroll::-webkit-scrollbar { display: none; }
+
+/* ─── Menu card hover underline ─── */
+.menu-card {
+  position: relative;
+  background: var(--card-bg);
+  border: 1px solid transparent;
+  transition: border-color 0.3s, transform 0.3s;
+  overflow: hidden;
+}
+.menu-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.menu-card:hover { border-color: rgba(201,168,76,0.25); }
+.menu-card:hover::after { transform: scaleX(1); }
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
