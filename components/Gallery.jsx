@@ -23,10 +23,18 @@ export default function Gallery() {
       }
       gsap.fromTo(
         '#gallery-header',
-        { opacity: 0, y: 30 },
+        { opacity: 0, y: 50 },
         {
-          opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
+          opacity: 1, y: 0, duration: 1.5, ease: 'expo.out',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' },
+        }
+      )
+      gsap.fromTo(
+        '.gallery-item',
+        { opacity: 0, y: 60 },
+        {
+          opacity: 1, y: 0, duration: 1.5, stagger: 0.15, ease: 'expo.out',
+          scrollTrigger: { trigger: '.gallery-grid', start: 'top 85%' },
         }
       )
     }, sectionRef)

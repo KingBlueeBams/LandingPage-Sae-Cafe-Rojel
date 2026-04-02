@@ -38,19 +38,11 @@ export default function About() {
       gsap.registerPlugin(ScrollTrigger)
 
       gsap.fromTo(
-        '#about-left',
-        { opacity: 0, x: -40 },
+        ['#about-left', '#about-right'],
+        { opacity: 0, y: 60 },
         {
-          opacity: 1, x: 0, duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: '#about-left', start: 'top 85%', toggleActions: 'play none none none' },
-        }
-      )
-      gsap.fromTo(
-        '#about-right',
-        { opacity: 0, x: 40 },
-        {
-          opacity: 1, x: 0, duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: '#about-right', start: 'top 85%', toggleActions: 'play none none none' },
+          opacity: 1, y: 0, duration: 1.5, stagger: 0.25, ease: 'expo.out',
+          scrollTrigger: { trigger: '.about-grid', start: 'top 85%', toggleActions: 'play none none none' },
         }
       )
     }, sectionRef)

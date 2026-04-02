@@ -136,8 +136,7 @@ export default function Reservation() {
                   id="res-name" type="text" required placeholder="Nama kamu"
                   value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
                   style={inputStyle}
-                  onFocus={(e) => (e.target.style.borderColor = 'var(--gold)')}
-                  onBlur={(e) => (e.target.style.borderColor = 'rgba(201,168,76,0.15)')}
+                  className="focus:outline-none focus:ring-2 focus:ring-[var(--gold)] focus:border-transparent transition-all duration-300"
                 />
               </div>
               <div>
@@ -146,8 +145,7 @@ export default function Reservation() {
                   id="res-phone" type="tel" required placeholder="08xxxxxxxxxx"
                   value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   style={inputStyle}
-                  onFocus={(e) => (e.target.style.borderColor = 'var(--gold)')}
-                  onBlur={(e) => (e.target.style.borderColor = 'rgba(201,168,76,0.15)')}
+                  className="focus:outline-none focus:ring-2 focus:ring-[var(--gold)] focus:border-transparent transition-all duration-300"
                 />
               </div>
             </div>
@@ -159,8 +157,7 @@ export default function Reservation() {
                   id="res-date" type="date" required
                   value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })}
                   style={{ ...inputStyle, colorScheme: 'dark' }}
-                  onFocus={(e) => (e.target.style.borderColor = 'var(--gold)')}
-                  onBlur={(e) => (e.target.style.borderColor = 'rgba(201,168,76,0.15)')}
+                  className="focus:outline-none focus:ring-2 focus:ring-[var(--gold)] focus:border-transparent transition-all duration-300"
                 />
               </div>
               <div>
@@ -169,8 +166,7 @@ export default function Reservation() {
                   id="res-time"
                   value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })}
                   style={{ ...inputStyle, cursor: 'none' }}
-                  onFocus={(e) => (e.target.style.borderColor = 'var(--gold)')}
-                  onBlur={(e) => (e.target.style.borderColor = 'rgba(201,168,76,0.15)')}
+                  className="focus:outline-none focus:ring-2 focus:ring-[var(--gold)] focus:border-transparent transition-all duration-300"
                 >
                   {['08:00', '10:00', '13:00', '15:00', '18:00', '20:00'].map((t) => (
                     <option key={t} value={t}>{t} WIB</option>
@@ -184,9 +180,8 @@ export default function Reservation() {
               <select
                 id="res-guests"
                 value={form.guests} onChange={(e) => setForm({ ...form, guests: e.target.value })}
-                style={inputStyle}
-                onFocus={(e) => (e.target.style.borderColor = 'var(--gold)')}
-                onBlur={(e) => (e.target.style.borderColor = 'rgba(201,168,76,0.15)')}
+                style={{ ...inputStyle, cursor: 'none' }}
+                className="focus:outline-none focus:ring-2 focus:ring-[var(--gold)] focus:border-transparent transition-all duration-300"
               >
                 <option value="1">1 Orang</option>
                 <option value="2">2 Orang</option>
@@ -204,8 +199,7 @@ export default function Reservation() {
                 placeholder="Ulang tahun, anniversary, meeting..."
                 value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })}
                 style={{ ...inputStyle, resize: 'none' }}
-                onFocus={(e) => (e.target.style.borderColor = 'var(--gold)')}
-                onBlur={(e) => (e.target.style.borderColor = 'rgba(201,168,76,0.15)')}
+                className="focus:outline-none focus:ring-2 focus:ring-[var(--gold)] focus:border-transparent transition-all duration-300"
               />
             </div>
 

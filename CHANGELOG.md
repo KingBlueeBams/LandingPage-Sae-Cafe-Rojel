@@ -117,6 +117,38 @@ Solusi:
 
 ---
 
+## Session 3 — Premium Animation & Performance Optimization
+**Tanggal:** 2 April 2026
+
+### 1. `components/Hero.jsx` — Immersive Koreografi & Continuous Zoom
+**Status:** ✅ Selesai
+- Mengubah animasi Entrance Timeline menjadi lebih *"smooth"* dengan stagger `0.025s`, duration `0.8s`, dan fungsi *ease* `back.out(1.4)`.
+- Mengganti animasi berhenti pada '*Background Image*' hero menjadi efek **Continuous Subtle Slow Zoom**, menggunakan skala 1.15 yang berulang secara *infinite yoyo* selama durasi panjang 35 detik.
+- Mengonfirmasi penggunaan `priority` attribute pada `next/image` untuk performa LCP.
+
+### 2. Scroll-Triggered Animations (Penyelarasan Desain Elegan)
+**Status:** ✅ Selesai
+- **Transisi Vertikal:** Menonaktifkan pergerakan masuk dari arah horizontal di bagian konten. Mengganti semua dengan efek slide-up mendalam (*translateY: 60*).
+- **Easing Premium:** Memperpanjang durasi ke `1.5s` dan menggunakan `ease: "expo.out"` untuk memberikan sensasi beban fisik pada elemen yang terkesan jatuh dengan mulus dan mahal.
+- **Implementasi Berkala:** Diterapkan seragam ke komponen `About.jsx`, `Gallery.jsx`, dan `LiveMusic.jsx` menggunakan `stagger` timing agar item di layout Grid muncul satu demi satu.
+
+### 3. `components/Menu.jsx` — Micro-interactions & Visibility Update
+**Status:** ✅ Selesai
+- **Pembersihan Visibilitas Badge:** Mengubah *styling* badge di pojok *menu card* menggunakan background glassmorphism tebal (`rgba(10,10,10,0.85)` + `backdrop-filter: blur(4px)`) dengan teks emas `font-weight: 600` agar terbaca sempurna dengan tingkat kontras yang tinggi di segala warna foto.
+- **Hover Micro-interaction:** Menambahkan Tailwind utility `group` dan class transform langsung ke Next.js Image `className="transition-transform duration-700 ease-out group-hover:scale-110"` untuk efek perbesaran foto kuliner/produk saat di-hover, merangsang nafsu makan pengguna.
+
+### 4. `components/Reservation.jsx` — Fokus Form Emas Terintegrasi
+**Status:** ✅ Selesai
+- **Pembersihan JavaScript Inline:** Menghapus event handler react state manual (`onFocus` & `onBlur`) guna meringankan render performa *client-side*.
+- **Tailwind Focus Rings:** Mengaplikasikan `focus:outline-none focus:ring-2 focus:ring-[var(--gold)] focus:border-transparent transition-all duration-300` pada semua elemen input. Memberikan cincin cahaya lembut warna emas setiap kali form diaktifkan.
+
+### 5. Optimasi LCP & `components/Navbar.jsx`
+**Status:** ✅ Selesai
+- Verifikasi keamanan LCP telah dilakukan (Largest Contentful Paint).
+- Logo navigasi utama `Logo Horizontal putih.png` telah disajikan dengan prop `priority={true}` murni untuk menekan CLS (Cumulative Layout Shift) dan menghilangkan *white flashes*.
+
+---
+
 ## Tech Stack
 | Teknologi | Versi | Penggunaan |
 |---|---|---|
@@ -131,7 +163,7 @@ Solusi:
 ## Design Decisions
 1. **Palet warna:** Dark (#0A0A0A) + Gold (#C9A84C) — TIDAK menggunakan Light Mode
 2. **Arsitektur:** JavaScript (.jsx) — TIDAK menggunakan TypeScript
-3. **Styling:** Vanilla CSS + inline styles — TIDAK menggunakan Tailwind (kecuali import)
+3. **Styling (Evolusi):** Eksekusi gaya visual digabungkan antar Vanilla CSS dan integrasi kelas bantuan murni *Tailwind CSS* untuk efisiensi hover element dan input focus rings.
 4. **Menu CTA:** Link WhatsApp general (bukan tombol per card) untuk desain clutter-free
 5. **macOS Dock Effect:** Hanya pada headline Hero untuk menjaga kebersihan visual
 6. **Font:** Playfair Display (heading) + Poppins (body)

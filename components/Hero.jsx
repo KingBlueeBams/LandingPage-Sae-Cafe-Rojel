@@ -38,28 +38,35 @@ export default function Hero() {
         autoAlpha: 0, y: 20,
       })
 
-      /* ── Entrance Timeline ── */
+      /* ── Entrance Timeline (Koreografi Kompleks) ── */
       const tl = gsap.timeline({
-        delay: 0.3,
+        delay: 0.2,
         defaults: { ease: 'power3.out' },
       })
 
-      tl.to('#hero-tag', { autoAlpha: 1, y: 0, duration: 0.6 })
+      tl.to('#hero-tag', { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out' })
         .to('.headline-char', {
           opacity: 1,
           y: 0,
-          stagger: 0.018,
-          ease: 'back.out(1.7)',
-          duration: 0.6,
-        }, '-=0.3')
-        .to('#hero-sub', { autoAlpha: 1, y: 0, duration: 0.7 }, '-=0.3')
-        .to('#hero-btns', { autoAlpha: 1, y: 0, duration: 0.6 }, '-=0.3')
-        .to('#hero-stats', { autoAlpha: 1, y: 0, duration: 0.7 }, '-=0.2')
-        .fromTo('#hero-bg-img',
-          { scale: 1.08 },
-          { scale: 1, duration: 2.5, ease: 'power2.out' },
-          0  // starts at same time as timeline
-        )
+          stagger: 0.025,
+          ease: 'back.out(1.4)',
+          duration: 0.8,
+        }, '-=0.5')
+        .to('#hero-sub', { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '-=0.5')
+        .to('#hero-btns', { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '-=0.6')
+        .to('#hero-stats', { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '-=0.6')
+
+      /* ── Continuous Subtle Slow Zoom ── */
+      gsap.fromTo('#hero-bg-img',
+        { scale: 1 },
+        { 
+          scale: 1.15, 
+          duration: 35, 
+          ease: 'none', 
+          repeat: -1, 
+          yoyo: true 
+        }
+      )
 
       /* ── Gold glow parallax ── */
       if (typeof ScrollTrigger !== 'undefined') {

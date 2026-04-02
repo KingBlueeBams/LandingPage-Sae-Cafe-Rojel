@@ -56,18 +56,18 @@ export default function LiveMusic() {
 
       gsap.fromTo(
         '#music-header',
-        { opacity: 0, y: 30 },
+        { opacity: 0, y: 50 },
         {
-          opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
+          opacity: 1, y: 0, duration: 1.5, ease: 'expo.out',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' },
         }
       )
 
       gsap.fromTo(
         '.music-card',
-        { opacity: 0, y: 40 },
+        { opacity: 0, y: 60 },
         {
-          opacity: 1, y: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+          opacity: 1, y: 0, duration: 1.5, stagger: 0.2, ease: 'expo.out',
           scrollTrigger: { trigger: '.music-grid', start: 'top 85%' },
         }
       )

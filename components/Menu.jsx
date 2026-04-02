@@ -175,7 +175,7 @@ const MENU_DATA = {
 function MenuCard({ item }) {
   return (
     <div
-      className="menu-card"
+      className="menu-card group"
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -194,6 +194,7 @@ function MenuCard({ item }) {
           alt={item.name}
           fill
           sizes="(max-width: 768px) 50vw, 200px"
+          className="transition-transform duration-700 ease-out group-hover:scale-110"
           style={{ objectFit: 'cover', objectPosition: 'center' }}
           quality={75}
           loading="lazy"
@@ -201,14 +202,18 @@ function MenuCard({ item }) {
         {item.badge && (
           <div style={{
             position: 'absolute', top: '0.75rem', left: '0.75rem',
-            background: 'rgba(201,168,76,0.15)',
-            border: '1px solid rgba(201,168,76,0.3)',
+            background: 'rgba(10, 10, 10, 0.85)',
+            backdropFilter: 'blur(4px)',
+            border: '1px solid rgba(201,168,76,0.6)',
             color: 'var(--gold)',
-            fontSize: '0.55rem',
+            fontSize: '0.6rem',
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
-            padding: '0.2rem 0.5rem',
-            fontWeight: 500,
+            padding: '0.3rem 0.6rem',
+            borderRadius: '4px',
+            fontWeight: 600,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+            zIndex: 10
           }}>
             {item.badge}
           </div>
